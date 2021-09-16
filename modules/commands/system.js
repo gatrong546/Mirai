@@ -41,7 +41,7 @@ module.exports.run = async function ({ api, event }) {
 		var diskInfo = await diskLayout();
 		var memInfo = await memLayout();
 		var { total: totalMem, available: availableMem } = await mem();
-		var { platform: OSPlatform, distro, arch, build: uefi,release } = await osInfo();
+		var { platform: OSPlatform, distro, uefi, arch, build: release } = await osInfo();
 		var { controllers: graphicsControl, } = await graphics();
 		var disk = [], i = 1;
 
@@ -58,13 +58,13 @@ module.exports.run = async function ({ api, event }) {
 				"» Tên: " + singleDisk.name + "\n" +
 				"» Nhà Sản Xuất: " + singleDisk.vendor + "\n" +
 				"» Cổng: " + singleDisk.interfaceType + "\n" + 
-				"» Loại: " + (singleDisk.type == undefined ? "Không Xác Định" : singleDisk.type == "HDD" ? "HDD" : "SSD") + "\n" +
+				"» Loại: " + (singleDisk.type == undefined ? "Không Xác Định" : singleDisk.type === 'HD' ? 'HDD' : singleDisk.type) + "\n" +
 				"» Kích Thước: " + byte2mb(singleDisk.size)
 			)
 		}
 
 	
-		
+		console.log(uefi)
 		return api.sendMessage(
 			"====「 CPU  ====\n" +
 			"» Tên: " + manufacturer + " " + brand + "\n" +
@@ -78,11 +78,6 @@ module.exports.run = async function ({ api, event }) {
 			"\n» Khả Dụng: " + byte2mb(availableMem) +
 			"\n» Nodejs: " + byte2mb(pidusage.memory) + "\n" +
 			disk.join("\n") + "\n" +
-			"====「 Graphics 」====\n" +
-			"» Tên: " + graphicsControl[0].model +
-			"\n» Nhà Sản Xuất: " + graphicsControl[0].vendor +
-			"\n» Vram: " + byte2mb(graphicsControl[0].vram*(1024*1024)) +
-			"\n» Loại: " + graphicsControl[0].bus + "\n"+
 			"====「 OS  ====\n" +
 			"» Tên: " + distro +
 			"\n» Nền Tảng: " + OSPlatform +
