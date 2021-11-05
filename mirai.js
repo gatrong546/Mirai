@@ -6,7 +6,7 @@ const { readdirSync, readFileSync, writeFileSync, existsSync, unlinkSync } = req
 const { join, resolve } = require("path");
 const { execSync } = require('child_process');
 const logger = require("./utils/log.js");
-const login = require("fca-xuyen-get");
+const login = require("@procodermew/fca-onefile");
 const axios = require("axios");
 
 global.client = new Object({
